@@ -1,6 +1,6 @@
 {
   "name": "hardhat-deploy-tenderly",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Hardhat plugin for hardhat-deploy to push contracts to tenderly",
   "repository": "github:wighawag/hardhat-deploy-tenderly",
   "author": "Ronan Sandford",

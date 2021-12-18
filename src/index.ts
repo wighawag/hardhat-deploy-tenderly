@@ -121,7 +121,7 @@ async function performAction(
 
         if (process.env.HARDHAT_DEPLOY_TENDERLY_DEBUG) {
           fs.writeFileSync(
-            `.hardhat-deploy-tenderly_${key}.json`,
+            `.hardhat-deploy-tenderly_${target}.json`,
             JSON.stringify(
               {
                 config: tenderlySolcConfig,
