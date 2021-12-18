@@ -1,82 +1,79 @@
 [![hardhat](https://hardhat.org/hardhat-plugin-badge.svg?1)](https://hardhat.org)
-# wighawag-hardhat-plugin-template
+# hardhat-deploy-tenderly
 
-_A one line description of the plugin_
-
-[Hardhat](http://hardhat.org) plugin example. 
+_A plugin to push contracts to tenderly_
 
 ## What
 
-<_A longer, one paragraph, description of the plugin_>
+This plugin add 2 commands to hardhat
 
-This plugin is just an example
+- `hardhat --network <networkName> tenderly:push`
+- `hardhat --network <networkName> tenderly:verify`
 
 ## Installation
 
-<_A step-by-step guide on how to install the plugin_>
-
 ```bash
-npm install wighawag-hardhat-plugin-template
+npm install -D hardhat-deploy-tenderly
 ```
 
 And add the following statement to your `hardhat.config.ts`:
 
 ```ts
-import "wighawag-hardhat-plugin-template";
+import "hardhat-deploy-tenderly";
 ```
 
 ## Required plugins
 
-<_The list of all the required Hardhat plugins if there are any_>
-
-Nothing required
+`hardhat-deploy`
 
 ## Tasks
 
-<_A description of each task added by this plugin. If it just overrides internal 
-tasks, this may not be needed_>
+### tenderly:push
 
-This plugin creates no additional tasks.
-<_or_>
-This plugin adds the _example_ task to Hardhat:
-```
-output of npx hardhat help example
+This plugin adds the _tenderly:push_ task to Hardhat:
+
+```sh
+hardhat --network <networkName> tenderly:push
 ``` 
 
-## Environment extensions
+This will push all your contract currently deployed on that network to tenderly.
 
-<_A description of each extension to the Hardhat Runtime Environment_>
+You ll have access to all debugging facility of Tenderly but your contract code will remains private to you and tenderly
 
-This plugin extends the Hardhat Runtime Environment by adding an `example` field
-whose type is `ExampleHardhatRuntimeEnvironmentField`.
+### tenderly:verify
+
+This plugin adds the _tenderly:verify_ task to Hardhat:
+
+```sh
+hardhat --network <networkName> tenderly:verify
+``` 
+
+
+This will push all your contract currently deployed on that network to tenderly and verify them publicly.
 
 ## Configuration
 
-<_A description of each extension to the HardhatConfig or to its fields_>
 
 This plugin extends the `HardhatConfig`'s `ProjectPaths` object with an optional 
-`newPath` field.
+`tenderly` field.
 
 This is an example of how to set it:
 
 ```js
 module.exports = {
-  paths: {
-    newPath: "./new-path"
+  tenderly: {
+    project: '<tenderly project name>',
+    username: '<tenderly username>',
   }
 };
 ```
 
 ## Usage
 
-<_A description of how to use this plugin. How to use the tasks if there are any, etc._>
+Make sure you configure your tenderly settings above.
 
-There are no additional steps you need to take for this plugin to work.
 
-Install it and access ethers through the Hardhat Runtime Environment anywhere 
-you need it (tasks, scripts, tests, etc).
+Install it and you can execute 
 
-## TypeScript support
-
-<_ any specific infor for typescript support _>
-
+- `hardhat --network <networkName> tenderly:push`
+- `hardhat --network <networkName> tenderly:verify`
