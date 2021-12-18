@@ -2,6 +2,7 @@ import {extendConfig, task} from 'hardhat/config';
 import {HardhatPluginError} from 'hardhat/plugins';
 import {ActionType, HardhatConfig, HardhatRuntimeEnvironment, HardhatUserConfig} from 'hardhat/types';
 import type {DeploymentsExtension, Deployment} from 'hardhat-deploy/types';
+import fs from 'fs';
 
 import {ReverseNetworkMap, TenderlyService} from './tenderly/TenderlyService';
 import './type-extensions';
@@ -117,6 +118,21 @@ async function performAction(
         tenderlySolcConfig.optimizations_used = metadata.settings.optimizer.enabled;
         tenderlySolcConfig.optimizations_count = metadata.settings.optimizer.runs;
         tenderlySolcConfig.evm_version = metadata.settings.evmVersion;
+
+        if (process.env.HARDHAT_DEPLOY_TENDERLY_DEBUG) {
+          fs.writeFileSync(
+            `.hardhat-deploy-tenderly_${key}`,
+            JSON.stringify(
+              {
+                config: tenderlySolcConfig,
+                contracts: tenderlyContracts,
+              },
+              null,
+              '  '
+            )
+          );
+        }
+
         await func({config: tenderlySolcConfig, contracts: tenderlyContracts});
       }
     } else {
@@ -150,7 +166,7 @@ const pushContracts: ActionType<void> = async (_, hre) => {
   }
 
   await performAction(hre, async (request) => {
-    const response = await TenderlyService.pushContracts(request, project, username);
+    await TenderlyService.pushContracts(request, project, username);
   });
 };
 
