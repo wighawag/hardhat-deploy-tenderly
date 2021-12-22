@@ -4,7 +4,7 @@ import {ActionType, HardhatConfig, HardhatRuntimeEnvironment, HardhatUserConfig}
 import type {DeploymentsExtension, Deployment} from 'hardhat-deploy/types';
 import fs from 'fs';
 
-import {ReverseNetworkMap, TenderlyService} from './tenderly/TenderlyService';
+import {TenderlyService} from './tenderly/TenderlyService';
 import './type-extensions';
 import {TenderlyContract, TenderlyContractConfig, TenderlyContractUploadRequest} from './tenderly/types';
 import {basename} from 'path';
@@ -57,13 +57,11 @@ async function performAction(
   const tenderlySolcConfig: TenderlyContractConfig = {};
 
   const chainId = (await (hre as any).getChainId()) as string;
-  const network = ReverseNetworkMap[chainId];
 
   const deployments = await getDeployments(hre);
 
   // console.log({network, chainId});
 
-  const tenderlyContracts: TenderlyContract[] = [];
   for (const deploymentName of Object.keys(deployments)) {
     const deployment = deployments[deploymentName];
 
@@ -71,6 +69,7 @@ async function performAction(
       const metadata = JSON.parse(deployment.metadata) as Metadata;
       console.log(`processing ${deploymentName}...`);
       for (const key of Object.keys(metadata.settings.compilationTarget)) {
+        const tenderlyContracts: TenderlyContract[] = [];
         // console.log(`key: ${key} ...`);
         const target = metadata.settings.compilationTarget[key];
         // const [sourcePath, contractName] = key.split(':');
