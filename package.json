@@ -1,6 +1,6 @@
 {
   "name": "hardhat-deploy-tenderly",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Hardhat plugin for hardhat-deploy to push contracts to tenderly",
   "repository": "github:wighawag/hardhat-deploy-tenderly",
   "author": "Ronan Sandford",
@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "hardhat": "^2.0.0",
-    "hardhat-deploy": "^0.9.4",
+    "hardhat-deploy": "^0.9.18",
     "mocha": "^5.2.0",
     "prettier": "^2.0.5",
     "source-map-support": "^0.5.12",
@@ -41,7 +41,8 @@
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "hardhat": "^2.0.0"
+    "hardhat": "^2.0.0",
+    "hardhat-deploy": "^0.9.18"
   },
   "scripts": {
     "prepare": "node ./.setup.js",

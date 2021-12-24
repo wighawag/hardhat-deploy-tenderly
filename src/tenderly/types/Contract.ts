@@ -27,6 +27,7 @@ export interface ContractCompiler {
 }
 
 export interface ContractNetwork {
+  display_name: string;
   events?: any;
   links?: Record<string, string>;
   address: string;

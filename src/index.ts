@@ -63,18 +63,30 @@ async function performAction(
   // console.log({network, chainId});
 
   for (const deploymentName of Object.keys(deployments)) {
+    if (deploymentName.endsWith('_Proxy')) {
+      continue;
+    }
+
     const deployment = deployments[deploymentName];
+
+    let name = deploymentName;
+    if (deployment.numDeployments && deploymentName.endsWith('_Implementation')) {
+      name = deploymentName + '_' + deployment.numDeployments.toString().padStart(3, '0');
+    }
 
     if (deployment.metadata) {
       const metadata = JSON.parse(deployment.metadata) as Metadata;
       console.log(`processing ${deploymentName}...`);
-      for (const key of Object.keys(metadata.settings.compilationTarget)) {
+      const compilationTargets = Object.keys(metadata.settings.compilationTarget);
+      for (let i = 0; i < compilationTargets.length; i++) {
+        const key = compilationTargets[i];
+
         const tenderlyContracts: TenderlyContract[] = [];
         // console.log(`key: ${key} ...`);
         const target = metadata.settings.compilationTarget[key];
         // const [sourcePath, contractName] = key.split(':');
         const sourcePath = key;
-        console.log(`target: ${target}, sourcePath: ${sourcePath}`);
+        // console.log(`target: ${target}, ${i === 0 ? `deployment: ${deploymentName}, ` : ''}sourcePath: ${sourcePath}`);
         tenderlyContracts.push({
           contractName: target,
           source: metadata.sources[sourcePath].content,
@@ -84,6 +96,7 @@ async function performAction(
           },
           networks: {
             [chainId]: {
+              display_name: name,
               address: deployment.address,
               transactionHash: deployment.receipt?.transactionHash,
             },
@@ -99,7 +112,7 @@ async function performAction(
           }
           console.log(`contractName: ${contractName}, sourcePath: ${sourcePath} ...`);
           tenderlyContracts.push({
-            contractName,
+            contractName: `${target}:${contractName}`, // works ?
             source: metadata.sources[sourcePath].content,
             sourcePath,
             compiler: {
