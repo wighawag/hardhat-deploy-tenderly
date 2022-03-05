@@ -70,7 +70,7 @@ async function performAction(
     const deployment = deployments[deploymentName];
 
     let name = deploymentName;
-    if (deployment.numDeployments && deploymentName.endsWith('_Implementation')) {
+    if (deployment.numDeployments && deployment.numDeployments > 1) {
       name = deploymentName + '_' + deployment.numDeployments.toString().padStart(3, '0');
     }
 
@@ -170,6 +170,8 @@ const pushContracts: ActionType<void> = async (_, hre) => {
     );
   }
 
+  const fullProjectName = project + (hre.config.tenderly?.appendNetworkNameToProject ? '-' + hre.network.name : '');
+
   if (username === undefined) {
     throw new HardhatPluginError(
       PluginName,
@@ -178,7 +180,7 @@ const pushContracts: ActionType<void> = async (_, hre) => {
   }
 
   await performAction(hre, async (request) => {
-    await TenderlyService.pushContracts(request, project, username);
+    await TenderlyService.pushContracts(request, fullProjectName, username);
   });
 };
 

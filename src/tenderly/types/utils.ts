@@ -13,6 +13,7 @@ export interface BytecodeMismatchError {
 export interface TenderlyConfig {
   project: string;
   username: string;
+  appendNetworkNameToProject?: boolean;
 }
 
 export interface Metadata {
